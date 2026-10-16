@@ -1,0 +1,304 @@
+name: NodeJS with Webpack
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Build
+      run: |
+        npm install
+        npx webpack
+- name: First interaction
+  uses: actions/first-interaction@v1.3.0
+  with:
+    # Token for the repository. Can be passed in using {{ secrets.GITHUB_TOKEN }}
+    repo-token: 
+    # Comment to post on an individual's first issue
+    issue-message: # optional
+    # Comment to post on an individual's first pull request
+    pr-message: # optional
+    - name: Close Stale Issues
+  uses: actions/stale@v11.0.0
+  with:
+    # Token for the repository. Can be passed in using `{{ secrets.GITHUB_TOKEN }}`.
+    repo-token: # optional, default is ${{ github.token }}
+    # The message to post on the issue when tagging it. If none provided, will not mark issues stale.
+    stale-issue-message: # optional
+    # The message to post on the pull request when tagging it. If none provided, will not mark pull requests stale.
+    stale-pr-message: # optional
+    # The message to post on the issue when closing it. If none provided, will not comment when closing an issue.
+    close-issue-message: # optional
+    # The message to post on the pull request when closing it. If none provided, will not comment when closing a pull requests.
+    close-pr-message: # optional
+    # The number of days old an issue or a pull request can be before marking it stale. Set to -1 to never mark issues or pull requests as stale automatically.
+    days-before-stale: # optional, default is 60
+    # The number of days old an issue can be before marking it stale. Set to -1 to never mark issues as stale automatically. Override "days-before-stale" option regarding only the issues.
+    days-before-issue-stale: # optional
+    # The number of days old a pull request can be before marking it stale. Set to -1 to never mark pull requests as stale automatically. Override "days-before-stale" option regarding only the pull requests.
+    days-before-pr-stale: # optional
+    # The number of days to wait to close an issue or a pull request after it being marked stale. Set to -1 to never close stale issues or pull requests.
+    days-before-close: # optional, default is 7
+    # The number of days to wait to close an issue after it being marked stale. Set to -1 to never close stale issues. Override "days-before-close" option regarding only the issues.
+    days-before-issue-close: # optional
+    # The number of days to wait to close a pull request after it being marked stale. Set to -1 to never close stale pull requests. Override "days-before-close" option regarding only the pull requests.
+    days-before-pr-close: # optional
+    # The label to apply when an issue is stale.
+    stale-issue-label: # optional, default is Stale
+    # The label to apply when an issue is closed.
+    close-issue-label: # optional
+    # The labels that mean an issue is exempt from being marked stale. Separate multiple labels with commas (eg. "label1,label2").
+    exempt-issue-labels: # optional, default is 
+    # The reason to use when closing an issue.
+    close-issue-reason: # optional, default is not_planned
+    # The label to apply when a pull request is stale.
+    stale-pr-label: # optional, default is Stale
+    # The label to apply when a pull request is closed.
+    close-pr-label: # optional
+    # The labels that mean a pull request is exempt from being marked as stale. Separate multiple labels with commas (eg. "label1,label2").
+    exempt-pr-labels: # optional, default is 
+    # The milestones that mean an issue or a pull request is exempt from being marked as stale. Separate multiple milestones with commas (eg. "milestone1,milestone2").
+    exempt-milestones: # optional, default is 
+    # The milestones that mean an issue is exempt from being marked as stale. Separate multiple milestones with commas (eg. "milestone1,milestone2"). Override "exempt-milestones" option regarding only the issues.
+    exempt-issue-milestones: # optional, default is 
+    # The milestones that mean a pull request is exempt from being marked as stale. Separate multiple milestones with commas (eg. "milestone1,milestone2"). Override "exempt-milestones" option regarding only the pull requests.
+    exempt-pr-milestones: # optional, default is 
+    # Exempt all issues and pull requests with milestones from being marked as stale. Default to false.
+    exempt-all-milestones: # optional, default is false
+    # Exempt all issues with milestones from being marked as stale. Override "exempt-all-milestones" option regarding only the issues.
+    exempt-all-issue-milestones: # optional, default is 
+    # Exempt all pull requests with milestones from being marked as stale. Override "exempt-all-milestones" option regarding only the pull requests.
+    exempt-all-pr-milestones: # optional, default is 
+    # Only issues or pull requests with all of these labels are checked if stale. Defaults to `` (disabled) and can be a comma-separated list of labels.
+    only-labels: # optional, default is 
+    # Only issues or pull requests with at least one of these labels are checked if stale. Defaults to `` (disabled) and can be a comma-separated list of labels.
+    any-of-labels: # optional, default is 
+    # Only issues with at least one of these labels are checked if stale. Defaults to `` (disabled) and can be a comma-separated list of labels. Override "any-of-labels" option regarding only the issues.
+    any-of-issue-labels: # optional, default is 
+    # Only pull requests with at least one of these labels are checked if stale. Defaults to `` (disabled) and can be a comma-separated list of labels. Override "any-of-labels" option regarding only the pull requests.
+    any-of-pr-labels: # optional, default is 
+    # Only issues with all of these labels are checked if stale. Defaults to `[]` (disabled) and can be a comma-separated list of labels. Override "only-labels" option regarding only the issues.
+    only-issue-labels: # optional, default is 
+    # Only pull requests with all of these labels are checked if stale. Defaults to `[]` (disabled) and can be a comma-separated list of labels. Override "only-labels" option regarding only the pull requests.
+    only-pr-labels: # optional, default is 
+    # The maximum number of operations per run, used to control rate limiting (GitHub API CRUD related).
+    operations-per-run: # optional, default is 30
+    # Remove stale labels from issues and pull requests when they are updated or commented on.
+    remove-stale-when-updated: # optional, default is true
+    # Remove stale labels from issues when they are updated or commented on. Override "remove-stale-when-updated" option regarding only the issues.
+    remove-issue-stale-when-updated: # optional, default is 
+    # Remove stale labels from pull requests when they are updated or commented on. Override "remove-stale-when-updated" option regarding only the pull requests.
+    remove-pr-stale-when-updated: # optional, default is 
+    # Run the processor in debug mode without actually performing any operations on live issues.
+    debug-only: # optional, default is false
+    # The order to get issues or pull requests. Defaults to false, which is descending.
+    ascending: # optional, default is false
+    # What to sort results by. Valid options are `created`, `updated`, and `comments`. Defaults to `created`.
+    sort-by: # optional, default is created
+    # Delete the git branch after closing a stale pull request.
+    delete-branch: # optional, default is false
+    # The date used to skip the stale action on issue/pull request created before it (ISO 8601 or RFC 2822).
+    start-date: # optional, default is 
+    # The assignees which exempt an issue or a pull request from being marked as stale. Separate multiple assignees with commas (eg. "user1,user2").
+    exempt-assignees: # optional, default is 
+    # The assignees which exempt an issue from being marked as stale. Separate multiple assignees with commas (eg. "user1,user2"). Override "exempt-assignees" option regarding only the issues.
+    exempt-issue-assignees: # optional, default is 
+    # The assignees which exempt a pull request from being marked as stale. Separate multiple assignees with commas (eg. "user1,user2"). Override "exempt-assignees" option regarding only the pull requests.
+    exempt-pr-assignees: # optional, default is 
+    # Exempt all issues and pull requests with assignees from being marked as stale. Default to false.
+    exempt-all-assignees: # optional, default is false
+    # Exempt all issues with assignees from being marked as stale. Override "exempt-all-assignees" option regarding only the issues.
+    exempt-all-issue-assignees: # optional, default is 
+    # Exempt all pull requests with assignees from being marked as stale. Override "exempt-all-assignees" option regarding only the pull requests.
+    exempt-all-pr-assignees: # optional, default is 
+    # Exempt draft pull requests from being marked as stale. Default to false.
+    exempt-draft-pr: # optional, default is false
+    # Display some statistics at the end regarding the stale workflow (only when the logs are enabled).
+    enable-statistics: # optional, default is true
+    # A comma delimited list of labels to add when an issue or pull request becomes unstale.
+    labels-to-add-when-unstale: # optional, default is 
+    # A comma delimited list of labels to remove when an issue or pull request becomes stale.
+    labels-to-remove-when-stale: # optional, default is 
+    # A comma delimited list of labels to remove when an issue or pull request becomes unstale.
+    labels-to-remove-when-unstale: # optional, default is 
+    # Any update (update/comment) can reset the stale idle time on the issues and pull requests.
+    ignore-updates: # optional, default is false
+    # Any update (update/comment) can reset the stale idle time on the issues. Override "ignore-updates" option regarding only the issues.
+    ignore-issue-updates: # optional, default is 
+    # Any update (update/comment) can reset the stale idle time on the pull requests. Override "ignore-updates" option regarding only the pull requests.
+    ignore-pr-updates: # optional, default is 
+    # Only the issues or the pull requests with an assignee will be marked as stale automatically.
+    include-only-assigned: # optional, default is false
+    # Only issues with a matching type are processed as stale/closed. Defaults to `[]` (disabled) and can be a comma-separated list of issue types.
+    only-issue-types: # optional, default is - name: Setup Node.js environment
+  uses: actions/setup-node@v7.1.0
+  with:
+    # Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0.
+    node-version: # optional
+    # File containing the version Spec of the version to use.  Examples: package.json, .nvmrc, .node-version, .tool-versions, mise.toml.
+    node-version-file: # optional
+    # Target architecture for Node to use. Examples: x86, x64. Will use system architecture by default.
+    architecture: # optional
+    # Set this option if you want the action to check for the latest available version that satisfies the version spec.
+    check-latest: # optional
+    # Optional registry to set up for auth. Will set the registry in a project level .npmrc and .yarnrc file, and set up auth to read in from env.NODE_AUTH_TOKEN.
+    registry-url: # optional
+    # Optional scope for authenticating against scoped registries. Will fall back to the repository owner when using the GitHub Packages registry (https://npm.pkg.github.com/).
+    scope: # optional
+    # Used to pull node distributions from node-versions. Since there's a default, this is typically not supplied by the user. When running this action on github.com, the default value is sufficient. When running on GHES, you can pass a personal access token for github.com if you are experiencing rate limiting.
+    token: # optional, default is ${{ github.server_url == 'https://github.com' && github.token || '' }}
+    # Used to specify a package manager for caching in the default directory. Supported values: npm, yarn, pnpm.
+    cache: # optional
+    # Set to false to disable automatic caching. By default, caching is enabled when either devEngines.packageManager or the top-level packageManager field in package.json specifies npm as the package manager.
+    package-manager-cache: # optional, default is true
+    # Used to specify the path to a dependency file: package-lock.json, yarn.lock, etc. Supports wildcards or a list of file names for caching multiple dependencies.
+    cache-dependency-path: # optional
+    # Used to specify an alternative mirror to download Node.js binaries from
+    mirror: # optional
+    # The token used as Authorization header when fetching from the mirror
+    mirror-token: # optional- name: SQLite Cloud - docs search
+  # You may pin to the exact commit or the version.
+  # uses: sqlitecloud/docsearch-action@f3c6771bfa8f770cd0ca621587a4bd8fe92e8049
+  uses: sqlitecloud/docsearch-action@v6
+  with:
+    # The SQLite Cloud project connection string.
+    project-string: 
+    # Your website's documentation base url.
+    base-url: 
+    # The name of the database to use on SQLite Cloud, just remeber to create first a database on your project!
+    database: 
+    # The path of the markdown files, by default it will parse every .md/.mdx file recursively starting from the working directory.
+    path: # optional, default is $(pwd)
+    # If you want to remove html elements from the search set this to true.
+    strip-html: # optional
+    # If you want to remove jsx elements from the search set this to true.
+    strip-jsx: # optional
+    # If you want to avoid redundancy of your markdown titles in the search set this to true.
+    strip-md-titles: # optional
+    # If you use a front matter and you want the action to convert it to json and send it to the cloud make this true.
+    use-front-matter: # optional
+    # Use the slug in the header as the path instead of the relative one.
+    path-using-slug: # optional- name: Docker image exists
+  # You may pin to the exact commit or the version.
+  # uses: cloudposse/github-action-docker-image-exists@4bdf41f05434b8b3570d45f34f9d43bc37b5f6a5
+  uses: cloudposse/github-action-docker-image-exists@0.2.0
+  with:
+    # Organization
+    organization: 
+    # Repository
+    repository: 
+    # Docker registry
+    registry: 
+    # Image name (excluding registry). Defaults to {{$organization/$repository}}.
+    image_name: # optional, default is 
+    # Tag
+    tag: 
+    # Docker login
+    login: # optional, default is 
+    # Docker password
+    password: # optional, default is - name: Orca Security - SCA / Secret Scanning
+  # You may pin to the exact commit or the version.
+  # uses: orcasecurity/shiftleft-fs-action@2a15c5a09ac3ead1d7a5d2ce9fdf911cdfaae3a7
+  uses: orcasecurity/shiftleft-fs-action@v1
+  with:
+    # Orca API Token used for Authentication
+    api_token: 
+    # Exit code for failed execution due to policy violations
+    exit_code: # optional
+    # Disable color output
+    no_color: # optional, default is false
+    # Project Key name
+    project_key: 
+    # Disable logs and warnings output
+    silent: # optional, default is false
+    # Suppress error reporting to the monitoring platform
+    disable_err_report: # optional, default is false
+    # Disables the secret detection scanning
+    disable_secret: # optional, default is false
+    # Do not show detailed view of the vulnerabilities findings
+    hide_vulnerabilities: # optional, default is false
+    # Number of logical CPUs to be used for secret scanning (default 10)
+    num_cpu: # optional
+    # Paths or directories to scan (comma-separated)
+    path: 
+    # exceptions YAML filepath.
+    exceptions_filepath: # optional
+    # path to custom secret controls file.
+    custom_secret_controls: # optional
+    # Format for displaying the results
+    format: # optional, default is table
+    # Output directory
+    output: # optional
+    # Set the maximum duration for the CLI execution. valid time units ("s", "m", "h")
+    timeout: # optional
+    # Show only failed issues in CLI results
+    show_failed_issues_only: # optional, default is false
+    # Prints results to console in the provided format (only when --output is provided)
+    console_output: # optional, default is table
+    # path to configuration file (json, yaml or toml)
+    config: # optional
+    # show github annotations on pull requests
+    show_annotations: # optional, default is true
+    # Scan log display name (on Orca platform)
+    display_name: # optional
+    # filter out skipped vulnerabilities from result
+    hide_skipped_vulnerabilities: # optional, default is false
+    # Set the maximum secrets that can be found, when reaching this number secret scan will stop
+    max_secret: # optional
+    # List of paths to be excluded from scan (comma-separated). Example: './notToBeScanned/,example.tf'
+    exclude_paths: # optional
+    # Show dependency origin tree of vulnerable packages
+    dependency_tree: # optional, default is false
+    # List of security issues to detect (comma-separated)
+    security_checks: # optional, default is vulns,secret
+    # Debug mode
+    debug: # optional, default is false
+    # Disable active verification
+    disable_active_verification: # optional, default is false
+    # The directory path to specify where the logs should be written to on debug mode. Default to the current working directory
+    log_path: # optional- name: Docker promote
+  # You may pin to the exact commit or the version.
+  # uses: cloudposse/github-action-docker-promote@184274d6dd92a632a8e5c7b323d11c2041f9504f
+  uses: cloudposse/github-action-docker-promote@v0.5.0
+  with:
+    # Organization
+    organization: 
+    # Repository
+    repository: 
+    # Docker registry
+    registry: 
+    # Image name (excluding registry). Defaults to {{$organization/$repository}}.
+    image_name: # optional, default is 
+    # Source tag
+    from: # optional
+    # Target tags
+    to: # optional
+    # Extract target tags from Git reference and GitHub events
+    use_metadata: # optional, default is true
+    # Docker login
+    login: # optional, default is 
+    # Docker password
+    password: # optional, default is 
+    # Promote retry max attempts
+    promote-retry-max-attempts: # optional, default is 3
+    # Promote retry timeout seconds
+    promote-retry-timeout-seconds: # optional, default is 3000
+    # Promote retry wait seconds
+    promote-retry-wait-seconds: # optional, default is 30
